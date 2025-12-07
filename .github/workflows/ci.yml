@@ -38,11 +38,20 @@ jobs:
       - name: Install Playwright Browsers
         run: playwright install
 
-      - name: Run test
-        run: pytest 
+      - name: Start Flask app
+        run: |
+          export FLASK_APP=app.py
+          export FLASK_ENV=development
+          flask run &
+          sleep 5
+
+      
 
       - name: Build Docker image
         run: docker build -t myflaskapp:latest .
+
+      - name: Run test
+        run: pytest 
 
   docker-push:
     runs-on: ubuntu-latest
