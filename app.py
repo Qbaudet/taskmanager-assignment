@@ -1,6 +1,7 @@
 import os
 from datetime import datetime, date
 from functools import wraps
+from models import User
 
 from flask import (
     Flask,
@@ -55,6 +56,12 @@ def login_required(view):
     def wrapped_view(**kwargs):
         if "user_id" not in session:
             return redirect(url_for("login", next=request.path))
+        
+        g.user = User.query.get(session["user_id"])
+        if g.user is None:
+            # Fallback if user_id in session points to no real user
+            session.clear()
+            return redirect(url_for("login"))
         return view(**kwargs)
 
     return wrapped_view
