@@ -35,6 +35,9 @@ jobs:
         run: |
           ruff check app.py
 
+      - name: Install Playwright Browsers
+        run: playwright install
+
       - name: Run test
         run: pytest 
 

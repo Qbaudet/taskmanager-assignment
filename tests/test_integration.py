@@ -1,6 +1,7 @@
 import pytest
 import os 
 import sys
+import random
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
@@ -27,8 +28,9 @@ def client(test_app):
 
 
 def test_register_and_login(client):
+    username = f"testuser_{random.randint(1,1000)}"
     response = client.post("/register", data={
-        "username": "testuser",
+        "username": username,
         "password": "mdp",
         "confirm": "mdp"
     }, follow_redirects=True)
@@ -36,7 +38,7 @@ def test_register_and_login(client):
     assert b"Registration successful" in response.data
 
     response = client.post("/login", data={
-        "username": "testuser",
+        "username": username,
         "password": "mdp"
     }, follow_redirects=True)
 
