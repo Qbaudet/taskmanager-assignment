@@ -31,10 +31,9 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-playwright
 
-      - name: Lint code
+      - name: Run Ruff
         run: |
-          pip install flake8
-          flake8 .
+          ruff check app.py
 
       - name: Run test
         run: pytest 
