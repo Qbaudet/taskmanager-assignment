@@ -69,5 +69,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t myusername/myflaskapp:latest .
-          docker push myusername/myflaskapp:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/myflaskapp:latest .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myflaskapp:latest
