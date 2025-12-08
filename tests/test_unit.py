@@ -1,6 +1,8 @@
 import os
 import sys
 from datetime import date, timedelta
+import pytest
+
 
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -33,8 +35,11 @@ def test_task_overdue():
     task5 = Task(title="Task 4", due_date=None, is_completed=False)
     assert task5.is_overdue() is False
 
-
+@pytest.mark.unit
 def test_build_postgres_uri(monkeypatch):
+    #deactive the database that is set in the cicd pipeline
+    monkeypatch.delenv("DATABASE_URL", raising=False)
+
     #temporary false environment variables
     monkeypatch.setenv("POSTGRES_USER", "test")
     monkeypatch.setenv("POSTGRES_PASSWORD", "pwd")
@@ -43,4 +48,5 @@ def test_build_postgres_uri(monkeypatch):
     monkeypatch.setenv("POSTGRES_DB", "database")
 
     uri = _build_postgres_uri()
+    print("URI =", uri)
     assert uri == "postgresql+psycopg2://test:pwd@localhost:5433/database"
